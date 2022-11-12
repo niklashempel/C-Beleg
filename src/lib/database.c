@@ -4,7 +4,6 @@
 #include <errno.h>
 #include <string.h>
 #include "database.h"
-#include "model.h"
 
 void die(const char *message)
 {
@@ -56,7 +55,7 @@ struct Connection *open(const char *filename, char mode)
         conn->file = fopen(filename, "r+");
         if (conn->file)
         {
-            Database_load(conn);
+           // Database_load(conn);
         }
     }
     return conn;
@@ -101,37 +100,37 @@ void create(struct Connection *conn)
     for (i = 0; i < MAX_ROWS; i++)
     {
         // make a prototype to initialize it
-        struct Medium addr = {.id = i, .set = 0};
+        struct Medium medium = {.id = i, .type = 0};
         // then just assign it
-        conn->db->rows[i] = addr;
+        conn->db->rows[i] = medium;
     }
 }
 
 void set(struct Connection *conn, int id, const char *name, const char *email)
 {
-    struct Medium *addr = &conn->db->rows[id];
-    if (addr->set)
-        die("Already set, delete it first");
+    // struct Medium *medium = &conn->db->rows[id];
+    // if (medium->set)
+    //     die("Already set, delete it first");
 
-    addr->set = 1;
-    // WARNING: bug, read the "How to BREAK IT" and fix this
-    char *res = strncpy(addr->name, name, MAX_DATA);
-    // demonstrate the strncpy bug
-    if (!res)
-        die("Name copy failed!");
+    // medium-> = 1;
+    // // WARNING: bug, read the "How to BREAK IT" and fix this
+    // char *res = strncpy(medium->name, name, MAX_DATA);
+    // // demonstrate the strncpy bug
+    // if (!res)
+    //     die("Name copy failed!");
 
-    res = strncpy(addr->email, email, MAX_DATA);
-    if (!res)
-        die("Email copy failed!");
+    // res = strncpy(medium->email, email, MAX_DATA);
+    // if (!res)
+    //     die("Email copy failed!");
 }
 
 void get(struct Connection *conn, int id)
 {
-    struct Medium *addr = &conn->db->rows[id];
+    struct Medium *medium = &conn->db->rows[id];
 
-    if (addr->set)
+    if (medium->id)
     {
-        print(addr);
+        print(medium);
     }
     else
     {
@@ -139,10 +138,10 @@ void get(struct Connection *conn, int id)
     }
 }
 
-void delete(struct Connection *conn, int id)
+void removeA(struct Connection *conn, int id)
 {
-    struct Medium addr = {.id = id, .set = 0};
-    conn->db->rows[id] = addr;
+    struct Medium medium = {.id = id, .type = 0};
+    conn->db->rows[id] = medium;
 };
 
 void list(struct Connection *conn)
@@ -154,7 +153,7 @@ void list(struct Connection *conn)
     {
         struct Medium *cur = &db->rows[i];
 
-        if (cur->set)
+        if (cur->id)
         {
             print(cur);
         }
