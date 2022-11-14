@@ -1,19 +1,16 @@
 #include <stdio.h>
-#include <ctype.h>
+// #include <ctype.h>
+// #include "../lib/model.h"
 #include "../lib/database.h"
- 
+#include "../third-party/sqlite3.h"
+
 const char *mediaTypes[] = {"Book", "CD", "DVD"};
+
+int callback(void *, int, char **, char **);
 
 int main()
 {
-    Medium media[5];
-
-    for (int i = 0; i < sizeof media / sizeof media[0]; i++)
-    {
-        media[i].type = i % 3;
-        sprintf(media[i].title, "%d", i);
-        sprintf(media[i].creator, "Name%d", i);
-    }
+    dbInit();
 
     printf("Content-Type: text/html");
     printf("\n\n");
@@ -27,17 +24,27 @@ int main()
     puts("<th>Author</th>\n");
     puts("</tr>\n");
 
-    for (int i = 0; i < sizeof media / sizeof media[0]; i++)
-    {
-        puts("<tr>\n");
-        printf("<td>%s</td>\n", media[i].title);
-        printf("<td>%s</td>\n", mediaTypes[media[i].type]);
-        printf("<td>%s</td>\n", media[i].creator);
-        printf("<tr>\n");
-    }
+    dbRead(callback);
 
     puts("</table>\n");
     puts("</body>\n");
     puts("</html>\n");
+    return 0;
+}
+
+int callback(void *NotUsed, int argc, char **argv, 
+                    char **azColName) {
+    
+    NotUsed = 0;
+    
+            puts("<tr>\n");
+    for (int i = 1; i < argc; i++)
+    {
+        printf("<td>%s</td>\n", argv[i] ? argv[i] : "");
+    }
+    printf("<td><a href='/edit?id=%d'><div>Edit</div></a></td>", argv[0]);
+    printf("</tr>\n");
+    printf("\n");
+    
     return 0;
 }
