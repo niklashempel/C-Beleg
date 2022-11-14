@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 int dbInit();
-int dbRead(int (*callback)(void*,int,char**,char**));
+int dbRead(int (*callback)(void *, int, char **, char **));
 
 enum TYPE
 {
