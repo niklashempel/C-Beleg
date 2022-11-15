@@ -1,7 +1,9 @@
-FROM httpd:alpine
+FROM httpd:alpine as base
 
 RUN apk update
 RUN apk add build-base curl libc-dev cmake make
+
+FROM base as build
 
 COPY ./httpd.conf /usr/local/apache2/conf/httpd.conf
 COPY src/ src/

@@ -51,14 +51,17 @@ int callback(void *NotUsed, int argc, char **argv,
     <td>\
         <div class='btn-toolbar' role='toolbar'>\
             <div class='btn-group me-2' role='group'>\
-                <a role='button' class='btn btn-primary' href='/edit?id=%s'>Edit</a>\
+                <a type='button' class='btn btn-primary' href='/edit?id=%s'>Edit</a>\
             </div>\
-            <div class='btn-group me-2' role='group'>\
-                <button type='button' class='btn btn-danger'>Delete</button>\
-            </div>\
+            <form action='/delete' method='post' style='margin-block-end: 0em'>\
+                <div class='form-group'>\
+                    <div class='btn-group me-2' role='group'>\
+                        <button type='submit' class='btn btn-danger'>Delete</button>\
+                    </div>\
+                </div>\
+            </form>\
         </div>\
-    </td>",
-           argv[0]);
+    </td>", argv[0], argv[0]);
 
     printf("</tr>\n");
     printf("\n");
