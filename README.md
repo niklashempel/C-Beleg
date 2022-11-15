@@ -18,5 +18,9 @@ docker build . -t beleg
 docker run -d -p 9000:80 beleg
 ```
 
+```
+docker run --rm -d -p 9000:80 --mount type=bind,source="$(pwd)"/build/src/pages/test.db,target=/usr/local/apache2/cgi-bin/test.db beleg
+```
+
 ### SQLite
 SQLite is obtained from their [download page](https://www.sqlite.org/download.html) and compiled together with the rest.
