@@ -14,5 +14,6 @@ RUN cmake -DCMAKE_C_COMPILER=/usr/bin/gcc CMakeLists.txt --no-warn-unused-cli -D
 
 RUN cp ./build/src/pages/default /usr/local/apache2/cgi-bin/default
 RUN cp ./build/src/pages/edit /usr/local/apache2/cgi-bin/edit
+RUN cp ./build/src/pages/delete /usr/local/apache2/cgi-bin/delete
 
 CMD [ "httpd-foreground" ]

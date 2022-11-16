@@ -10,8 +10,8 @@ int main()
 {
     dbInit();
 
-    printf("Content-Type: text/html");
-    printf("\n\n");
+    puts("Content-Type: text/html");
+    puts("\n\n");
     puts("<html>\n");
     puts("<head>\n");
     puts("<title>Hello World</title>\n");
@@ -24,13 +24,13 @@ int main()
     puts("<th>Name</th>\n");
     puts("<th>Type</th>\n");
     puts("<th>Author</th>\n");
-    puts("<th></th>\n");
+    puts("<th>Borrower</th>\n");
+    puts("<th>Actions</th>\n");
     puts("</tr>\n");
 
     dbRead(callback);
     puts("</table>\n");
     puts("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3' crossorigin='anonymous'></script>\n");
-    ;
     puts("</body>\n");
     puts("</html>\n");
     return 0;
@@ -55,13 +55,15 @@ int callback(void *NotUsed, int argc, char **argv,
             </div>\
             <form action='/delete' method='post' style='margin-block-end: 0em'>\
                 <div class='form-group'>\
+                <input type='hidden' value='%s' id='id' name='id'>\
                     <div class='btn-group me-2' role='group'>\
                         <button type='submit' class='btn btn-danger'>Delete</button>\
                     </div>\
                 </div>\
             </form>\
         </div>\
-    </td>", argv[0], argv[0]);
+    </td>",
+           argv[0], argv[0]);
 
     printf("</tr>\n");
     printf("\n");

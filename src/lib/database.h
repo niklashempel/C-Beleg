@@ -4,6 +4,7 @@
 
 int dbInit();
 int dbRead(int (*callback)(void *, int, char **, char **));
+int dbDelete(int id);
 
 enum TYPE
 {
