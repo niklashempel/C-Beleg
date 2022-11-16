@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../lib/database.h"
+#include "../lib/htmlHelper.h"
 
 int main()
 {
@@ -24,7 +25,7 @@ int main()
     }
     free(postdata);
 
-    printf("Location: /\n\n");
+    redirect("/");
 
     return 0;
 }

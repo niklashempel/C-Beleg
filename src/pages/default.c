@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "../lib/database.h"
 #include "../third-party/sqlite3.h"
+#include "../lib/htmlHelper.h"
 
 const char *mediaTypes[] = {"Book", "CD", "DVD"};
 
@@ -9,16 +10,8 @@ int callback(void *, int, char **, char **);
 int main()
 {
     dbInit();
+    printHeader("Hello World");
 
-    puts("Content-Type: text/html");
-    puts("\n\n");
-    puts("<html>\n");
-    puts("<head>\n");
-    puts("<title>Hello World</title>\n");
-    puts("<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi' crossorigin='anonymous'>\n");
-
-    puts("</head>\n");
-    puts("<body>\n");
     puts("<table class='table'>\n");
     puts("<tr>\n");
     puts("<th>Name</th>\n");
@@ -30,9 +23,18 @@ int main()
 
     dbRead(callback);
     puts("</table>\n");
-    puts("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js' integrity='sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3' crossorigin='anonymous'></script>\n");
-    puts("</body>\n");
-    puts("</html>\n");
+    puts("\
+    <div class='position-absolute bottom-0 end-0'>\
+        <a type='button' class='btn btn-secondary' href='/new' style='\
+            width: 30px;\
+            width: 70px;\
+            height: 70px;\
+            padding: 10px 16px;\
+            border-radius: 35px;\
+            font-size: 24px;\
+            text-align: center;'>+</a>\
+    </div>");
+    printFooter();
     return 0;
 }
 

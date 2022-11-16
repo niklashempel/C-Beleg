@@ -12,8 +12,14 @@ COPY CMakeLists.txt CMakeLists.txt
 RUN cmake -DCMAKE_C_COMPILER=/usr/bin/gcc CMakeLists.txt --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -S . -B ./build &&\
     cmake --build ./build --config Release 
 
-RUN cp ./build/src/pages/default /usr/local/apache2/cgi-bin/default
-RUN cp ./build/src/pages/edit /usr/local/apache2/cgi-bin/edit
-RUN cp ./build/src/pages/delete /usr/local/apache2/cgi-bin/delete
+WORKDIR /usr/local/apache2/build/src/pages
+
+RUN cp default /usr/local/apache2/cgi-bin/default
+RUN cp edit /usr/local/apache2/cgi-bin/edit
+RUN cp delete /usr/local/apache2/cgi-bin/delete
+RUN cp new /usr/local/apache2/cgi-bin/new
+RUN cp create /usr/local/apache2/cgi-bin/create
+
+RUN chmod 1777 /usr/local/apache2/cgi-bin
 
 CMD [ "httpd-foreground" ]
