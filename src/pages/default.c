@@ -10,30 +10,29 @@ int callback(void *, int, char **, char **);
 int main()
 {
     dbInit();
-    printHeader("Hello World");
+    printHeader("Media control");
 
-    puts("<table class='table'>\n");
-    puts("<tr>\n");
-    puts("<th>Name</th>\n");
-    puts("<th>Type</th>\n");
-    puts("<th>Author</th>\n");
-    puts("<th>Borrower</th>\n");
-    puts("<th>Actions</th>\n");
-    puts("</tr>\n");
+    puts("\
+    <table class='table'>\
+        <tr>\
+            <th colspan='4'>\
+                <h3>Media</h3>\
+            </th>\
+            <td align='right'>\
+                <a type='button' class='btn btn-success' href='/new'>New medium</a>\
+            </td>\
+        </tr>\
+    <tr>\
+        <th>Name</th>\
+        <th>Type</th>\
+        <th>Author</th>\
+        <th>Borrower</th>\
+        <th>Actions</th>\
+    </tr>");
 
     dbRead(callback);
-    puts("</table>\n");
-    puts("\
-    <div class='position-absolute bottom-0 end-0'>\
-        <a type='button' class='btn btn-secondary' href='/new' style='\
-            width: 30px;\
-            width: 70px;\
-            height: 70px;\
-            padding: 10px 16px;\
-            border-radius: 35px;\
-            font-size: 24px;\
-            text-align: center;'>+</a>\
-    </div>");
+
+    puts("</table>");
     printFooter();
     return 0;
 }
@@ -41,10 +40,9 @@ int main()
 int callback(void *NotUsed, int argc, char **argv,
              char **azColName)
 {
-
     NotUsed = 0;
 
-    puts("<tr>\n");
+    puts("<tr>");
     for (int i = 1; i < argc; i++)
     {
         printf("<td>%s</td>\n", argv[i] ? argv[i] : "");
@@ -67,8 +65,7 @@ int callback(void *NotUsed, int argc, char **argv,
     </td>",
            argv[0], argv[0]);
 
-    printf("</tr>\n");
-    printf("\n");
+    printf("</tr>");
 
     return 0;
 }
