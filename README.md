@@ -23,4 +23,4 @@ docker run --rm -d -p 9000:80 --mount type=bind,source="$(pwd)"/build/src/pages/
 ```
 
 ### SQLite
-SQLite is obtained from their [download page](https://www.sqlite.org/download.html) and compiled together with the rest.
+SQLite is obtained from its [download page](https://www.sqlite.org/download.html) and compiled together with the rest.
