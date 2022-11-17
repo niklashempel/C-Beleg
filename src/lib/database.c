@@ -20,7 +20,7 @@ int dbInit()
         return 1;
     }
 
-    char *sql = "CREATE TABLE IF NOT EXISTS Media(Id INT PRIMARY KEY,Name TEXT,Type INT,Creator TEXT,Borrower TEXT);";
+    char *sql = "CREATE TABLE IF NOT EXISTS Media(Id INTEGER PRIMARY KEY AUTOINCREMENT,Name TEXT,Type INT,Creator TEXT,Borrower TEXT);";
 
     rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
@@ -108,7 +108,7 @@ int dbDelete(int id)
 
     rc = sqlite3_step(res);
 
-    if (rc != SQLITE_OK)
+    if (rc != SQLITE_DONE)
     {
         fprintf(stderr, "Failed to delete data\n");
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
