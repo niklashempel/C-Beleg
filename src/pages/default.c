@@ -56,9 +56,9 @@ int callback(void *NotUsed, int argc, char **argv,
             <form action='/delete' method='post' style='margin-block-end: 0em'>\
                 <div class='form-group'>\
                 <input type='hidden' value='%s' id='id' name='id'>\
-                    <div class='btn-group me-2' role='group'>\
-                        <button type='submit' class='btn btn-danger'>Delete</button>\
-                    </div>\
+                <div class='btn-group me-2' role='group'>\
+                    <button type='submit' class='btn btn-danger'>Delete</button>\
+                </div>\
                 </div>\
             </form>\
         </div>\

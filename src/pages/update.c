@@ -4,9 +4,11 @@
 #include "../lib/database.h"
 #include "../lib/models.h"
 #include "../lib/htmlHelper.h"
+#include "../lib/query.h"
 
 int main()
 {
+    int id = getIdFromQueryString();
     char *postdata;
     getPostdata(&postdata);
 
@@ -44,7 +46,7 @@ int main()
         key = tempKey;
     }
 
-    dbCreate(&medium);
+    dbUpdate(id, &medium);
     free(postdata);
 
     redirect("/");

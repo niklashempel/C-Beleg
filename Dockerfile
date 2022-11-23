@@ -19,6 +19,7 @@ RUN cp edit /usr/local/apache2/cgi-bin/edit
 RUN cp delete /usr/local/apache2/cgi-bin/delete
 RUN cp new /usr/local/apache2/cgi-bin/new
 RUN cp create /usr/local/apache2/cgi-bin/create
+RUN cp update /usr/local/apache2/cgi-bin/update
 
 RUN chmod 1777 /usr/local/apache2/cgi-bin
 

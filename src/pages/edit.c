@@ -1,35 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../lib/models.h"
+#include "../lib/database.h"
+#include "../lib/htmlHelper.h"
+#include "../lib/query.h"
 
 int main()
 {
-    char *Param;
-    char *id;
+    int id = getIdFromQueryString();
+    
+    Medium medium;
+    if (!dbFind(id, &medium))
+    {
+        printHeader("Edit");
+        printf("\
+        <form action='/update?id=%d' method='post'>\
+            <div class='form-group'>\
+                <label for='inputName'>Name</label>\
+                <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name' value='%s'>\
+            </div>\
+            <div class='form-group'>\
+                <label for='selectType'>Select medium type</label>\
+                <select class='form-control' id='selectType' name='type'>\
+                <option value='0' %s>Book</option>\
+                <option value='1' %s>CD</option>\
+                <option value='2' %s>DVD</option>\
+                </select>\
+            </div>\
+            <div class='form-group'>\
+                <label for='inputCreator'>Author/Interpreter</label>\
+                <input type='text' class='form-control' id='inputCreator' placeholder='Enter author, interpreter etc.' name='creator' value='%s'>\
+            </div>\
+            <div class='form-group'>\
+                <label for='inputBorrower'>Borrower</label>\
+                <input type='text' class='form-control' id='inputBorrower' placeholder='Enter borrower' name='borrower' value='%s'>\
+            </div>\
+            <button type='submit' class='btn btn-primary'>Submit</button>\
+        </form>",
+               medium.id, medium.name, medium.type == 0 ? "selected" : "", medium.type == 1 ? "selected" : "", medium.type == 2 ? "selected" : "", medium.creator, medium.borrower);
 
-    puts("Content-Type: text/html\n\n");
-    puts("<html><head><title>Edit");
-    puts("</title></head><body><h2><hr>\n");
-    puts("<pre>");
-    Param = malloc(1024); //(len+1);
-    Param = getenv("QUERY_STRING");
-    // puts(Param);
-    id = strstr(Param, "id");
-    // p += 4;
-    // T = strtol(p, (char **)NULL, 10);
-    // p = strstr(Param, "Mon");
-    // p += 4;
-    // M = strtol(p, (char **)NULL, 10);
-    // printf("Tag: %d, Mon: %d<br>", T, M);
-    // while (fgets(vBuf, 128, FT))
-    // {
-    //     sscanf(vBuf, "%d.%d. %[^\n]", &t, &m, Text);
-    //     if (T == t && M == m)
-    //         printf("%d.%d. :%s<p>", t, m, Text);
-    // }
-    puts("<p>");
-    puts("</pre><hr>");
-    puts("</body>\n");
-    puts("</html>\n");
+        printFooter();
+    };
     return 0;
 }

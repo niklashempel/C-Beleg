@@ -10,6 +10,7 @@ typedef enum TYPE
 
 typedef struct Medium
 {
+    int id;
     char *name;
     TYPE type;
     char *creator;

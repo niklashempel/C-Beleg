@@ -133,6 +133,7 @@ int dbCreate(Medium *medium)
     if (rc != SQLITE_OK)
     {
         fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+
         sqlite3_close(db);
 
         return 1;
@@ -160,6 +161,119 @@ int dbCreate(Medium *medium)
     if (rc != SQLITE_DONE)
     {
         fprintf(stderr, "Failed to insert data\n");
+        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
+}
+
+int dbFind(int id, Medium *medium)
+{
+    sqlite3 *db;
+    sqlite3_stmt *res;
+
+    int rc = sqlite3_open(dbFileName, &db);
+
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    char *sql = "SELECT * FROM Media WHERE Id = @id";
+
+    rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
+
+    if (rc == SQLITE_OK)
+    {
+        int idIndex = sqlite3_bind_parameter_index(res, "@id");
+        sqlite3_bind_int(res, idIndex, id);
+    }
+    else
+    {
+        fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+    }
+
+    rc = sqlite3_step(res);
+
+    if (rc == SQLITE_ROW)
+    {
+        medium->id = (int)sqlite3_column_int(res, 0);
+        medium->name = (char *)sqlite3_column_text(res, 1);
+        medium->type = (int)sqlite3_column_int(res, 2);
+        medium->creator = (char *)sqlite3_column_text(res, 3);
+        medium->borrower = (char *)sqlite3_column_text(res, 4);
+    }
+    else if (rc == SQLITE_DONE)
+    {
+        fprintf(stderr, "Failed to select data with id %d\n", id);
+
+        sqlite3_close(db);
+
+        return 1;
+    }
+    else
+    {
+        fprintf(stderr, "Failed to select data\n");
+        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
+}
+
+int dbUpdate(int id, Medium *medium)
+{
+    sqlite3 *db;
+    sqlite3_stmt *res;
+
+    int rc = sqlite3_open(dbFileName, &db);
+
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stdout, "Cannot open database: %s\n", sqlite3_errmsg(db));
+
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    char *sql = "UPDATE Media set Name = ?, Type = ?, Creator = ?, Borrower = ? WHERE Id = ?";
+
+    rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
+
+    if (rc == SQLITE_OK)
+    {
+        sqlite3_bind_text(res, 1, medium->name, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(res, 2, medium->type);
+        sqlite3_bind_text(res, 3, medium->creator, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(res, 4, medium->borrower, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int(res, 5, id);
+    }
+    else
+    {
+        fprintf(stdout, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+    }
+
+    rc = sqlite3_step(res);
+
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Failed to update data\n");
         fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
 
         sqlite3_close(db);

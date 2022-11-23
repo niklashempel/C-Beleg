@@ -10,4 +10,10 @@ add_library(
     htmlHelper.c
 )
 
+add_library(
+    query
+    query.h
+    query.c
+)
+
 target_link_libraries(database sqlite3)
