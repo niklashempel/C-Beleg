@@ -1,5 +1,5 @@
-#ifndef HTML_HELPER_H
-#define HTML_HELPER_H
+#ifndef HTML_H
+#define HTML_H
 
 void printHeader();
 void printFooter();

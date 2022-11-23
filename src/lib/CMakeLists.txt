@@ -5,9 +5,9 @@ add_library(
 )
 
 add_library(
-    htmlHelper
-    htmlHelper.h
-    htmlHelper.c
+    html
+    html.h
+    html.c
 )
 
 add_library(

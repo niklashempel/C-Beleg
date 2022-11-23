@@ -1,22 +1,25 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../lib/database.h"
-#include "../lib/htmlHelper.h"
+#include "../lib/html.h"
+#include "../lib/query.h"
 
 int main()
 {
-    char *postdata;
-    getPostdata(&postdata);
-    
-    char *key = strtok(postdata, "=");
+    char *body;
+    getRequestBody(&body);
+
+    // Get id from body.
+    char *key = strtok(body, "=");
     char *value = strtok(NULL, "");
-    if (key && (strcmp("id", key) == 0) && value)
+    if (key && (strcmp("id", key) == 0) && value != NULL)
     {
         int id = (int)strtol(value, NULL, 10);
+
         dbDelete(id);
     }
-    free(postdata);
+
+    free(body);
 
     redirect("/");
 

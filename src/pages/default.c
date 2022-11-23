@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../lib/database.h"
 #include "../third-party/sqlite3.h"
-#include "../lib/htmlHelper.h"
+#include "../lib/html.h"
 
 const char *mediaTypes[] = {"Book", "CD", "DVD"};
 

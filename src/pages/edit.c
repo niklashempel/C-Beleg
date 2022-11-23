@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include "../lib/models.h"
 #include "../lib/database.h"
-#include "../lib/htmlHelper.h"
+#include "../lib/models.h"
+#include "../lib/html.h"
 #include "../lib/query.h"
 
 int main()
 {
     int id = getIdFromQueryString();
-    
+
     Medium medium;
     if (!dbFind(id, &medium))
     {
@@ -38,9 +37,11 @@ int main()
             </div>\
             <button type='submit' class='btn btn-primary'>Submit</button>\
         </form>",
-               medium.id, medium.name, medium.type == 0 ? "selected" : "", medium.type == 1 ? "selected" : "", medium.type == 2 ? "selected" : "", medium.creator, medium.borrower);
+               medium.id, medium.name, medium.type == 0 ? "selected" : "", medium.type == 1 ? "selected" : "",
+               medium.type == 2 ? "selected" : "", medium.creator, medium.borrower);
 
         printFooter();
     };
+
     return 0;
 }
