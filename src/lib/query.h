@@ -1,2 +1,5 @@
+#include "models.h"
+
 int getIdFromQueryString();
-void getPostdata(char **postdata);
+void getRequestBody(char **body);
+void parseRequestBody(char *body, Medium *medium);
