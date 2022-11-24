@@ -22,6 +22,25 @@ int main()
                 <a type='button' class='btn btn-success' href='/new'>New medium</a>\
             </td>\
         </tr>\
+        <tr>\
+            <td colspan='5'>\
+                <form action='/' method='get'>\
+                    <div class='row align-items-end'>\
+                        <div class='form-group col-md-2'>\
+                            <label for='inputName'>Name</label>\
+                            <input type='text' class='form-control' id='inputName' placeholder='Medium name' name='name'>\
+                        </div>\
+                        <div class='form-group col-md-2'>\
+                            <label for='inputBorrower'>Borrower</label>\
+                            <input type='text' class='form-control' id='inputBorrower' placeholder='Borrower name' name='borrower'>\
+                        </div>\
+                        <div class='form-group col-md'>\
+                            <button type='submit' class='form-group col-md-2 btn btn-primary'>Filter</button>\
+                        </div>\
+                    </div>\
+                  </form>\
+            </td>\
+        </tr>\
     <tr>\
         <th>Name</th>\
         <th>Type</th>\
