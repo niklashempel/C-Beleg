@@ -8,5 +8,6 @@ int dbDelete(int id);
 int dbCreate(Medium *medium);
 int dbFind(int id, Medium *medium);
 int dbUpdate(int id, Medium *medium);
+int dbFilter(Filter *filter);
 
 #endif // DATABASE

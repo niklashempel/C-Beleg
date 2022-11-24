@@ -4,8 +4,7 @@
 #include "models.h"
 
 int getIdFromQueryString(){
-    char *query;
-    query = getenv("QUERY_STRING");
+    char *query = getenv("QUERY_STRING");
     char *key = strtok(query, "=");
     char *value = strtok(NULL, "");
     int id = atoi(value);
@@ -49,6 +48,32 @@ void parseRequestBody(char *body, Medium *medium){
         {
             value = strtok(NULL, "=");
             medium->borrower = value;
+        }
+
+        // We store the original key because strtok() destroys the original string.
+        key = tempKey;
+    }
+}
+
+void parseFilterQuery(Filter *filter){
+    char *body = getenv("QUERY_STRING");
+    char *key;
+    char *value;
+    char *tempKey;
+    for (key = strtok(body, "&"); key != NULL; key = strtok(key, "&"))
+    {
+        tempKey = key + strlen(key) + 1;
+        key = strtok(key, "=");
+
+        if (strcmp(key, "name") == 0)
+        {
+            value = strtok(NULL, "=");
+            filter->name = value == NULL ? "" : value;
+        }
+        else if (strcmp(key, "borrower") == 0)
+        {
+            value = strtok(NULL, "=");
+            filter->borrower = value == NULL ? "" : value;
         }
 
         // We store the original key because strtok() destroys the original string.

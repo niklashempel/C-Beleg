@@ -17,4 +17,9 @@ typedef struct Medium
     char *borrower;
 } Medium;
 
+typedef struct Filter{
+    char *name;
+    char *borrower;
+} Filter;
+
 #endif // Models

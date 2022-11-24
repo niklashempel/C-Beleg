@@ -2,6 +2,7 @@
 #include "../lib/database.h"
 #include "../third-party/sqlite3.h"
 #include "../lib/html.h"
+#include "../lib/query.h"
 
 const char *mediaTypes[] = {"Book", "CD", "DVD"};
 
@@ -10,9 +11,13 @@ int callback(void *, int, char **, char **);
 int main()
 {
     dbInit();
+
+    Filter filter = {.name = "", .borrower = ""};
+    parseFilterQuery(&filter);
+
     printHeader("Media control");
 
-    puts("\
+    printf("\
     <table class='table'>\
         <tr>\
             <th colspan='4'>\
@@ -28,14 +33,15 @@ int main()
                     <div class='row align-items-end'>\
                         <div class='form-group col-md-2'>\
                             <label for='inputName'>Name</label>\
-                            <input type='text' class='form-control' id='inputName' placeholder='Medium name' name='name'>\
+                            <input type='text' class='form-control' id='inputName' placeholder='Medium name' name='name' value='%s'>\
                         </div>\
                         <div class='form-group col-md-2'>\
                             <label for='inputBorrower'>Borrower</label>\
-                            <input type='text' class='form-control' id='inputBorrower' placeholder='Borrower name' name='borrower'>\
+                            <input type='text' class='form-control' id='inputBorrower' placeholder='Borrower name' name='borrower' value='%s'>\
                         </div>\
-                        <div class='form-group col-md'>\
-                            <button type='submit' class='form-group col-md-2 btn btn-primary'>Filter</button>\
+                        <div class='form-group col-md-2'>\
+                            <button type='submit' class='form-group btn btn-primary'>Filter</button>\
+                            <a type='button' class='form-group btn btn-info' href='/'>Clear</a>\
                         </div>\
                     </div>\
                   </form>\
@@ -47,9 +53,15 @@ int main()
         <th>Author</th>\
         <th>Borrower</th>\
         <th>Actions</th>\
-    </tr>");
-
-    dbRead(callback);
+    </tr>", filter.name, filter.borrower);
+    if (filter.name != NULL && filter.borrower != NULL)
+    {
+        dbFilter(&filter);
+    }
+    else
+    {
+        dbRead(callback);
+    }
 
     puts("</table>");
     printFooter();

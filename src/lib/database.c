@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "database.h"
 #include "../third-party/sqlite3.h"
 
@@ -284,4 +286,108 @@ int dbUpdate(int id, Medium *medium)
     sqlite3_close(db);
 
     return 0;
+}
+
+int dbFilter(Filter *filter)
+{
+    sqlite3 *db;
+    sqlite3_stmt *res;
+
+    int rc = sqlite3_open(dbFileName, &db);
+
+    if (rc != SQLITE_OK)
+    {
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    char *sql = "SELECT * FROM Media WHERE Name like ? AND Borrower like ?";
+
+    rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
+
+    if (rc == SQLITE_OK)
+    {
+
+        char *name;
+        prepareFilter(&name, filter->name);
+
+        char *borrower;
+        prepareFilter(&borrower, filter->borrower);
+
+        sqlite3_bind_text(res, 1, name, -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(res, 2, borrower, -1, SQLITE_TRANSIENT);
+
+        free(name);
+        free(borrower);
+    }
+    else
+    {
+        fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+    }
+
+    int argc = sqlite3_column_count(res);
+
+    if (sqlite3_step(res) == SQLITE_ROW)
+    {
+        do
+        {
+            puts("<tr>");
+            int id = sqlite3_column_int(res, 0);
+            printf("<td>%s</td>\n", (char *)sqlite3_column_text(res, 1));
+            printf("<td>%d</td>\n", sqlite3_column_int(res, 2));
+            printf("<td>%s</td>\n", (char *)sqlite3_column_text(res, 3));
+            printf("<td>%s</td>\n", (char *)sqlite3_column_text(res, 4));
+            printf("\
+                    <td>\
+                        <div class='btn-toolbar' role='toolbar'>\
+                            <div class='btn-group me-2' role='group'>\
+                                <a type='button' class='btn btn-primary' href='/edit?id=%d'>Edit</a>\
+                            </div>\
+                            <form action='/delete' method='post' style='margin-block-end: 0em'>\
+                                <div class='form-group'>\
+                                <input type='hidden' value='%d' id='id' name='id'>\
+                                <div class='btn-group me-2' role='group'>\
+                                    <button type='submit' class='btn btn-danger'>Delete</button>\
+                                </div>\
+                                </div>\
+                            </form>\
+                        </div>\
+                    </td>",
+                   id, id);
+
+            printf("</tr>");
+        } while (sqlite3_step(res) == SQLITE_ROW);
+    }
+    else if (rc == SQLITE_DONE)
+    {
+        sqlite3_close(db);
+
+        return 0;
+    }
+    else
+    {
+        fprintf(stderr, "Failed to select data\n");
+        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+
+        sqlite3_close(db);
+
+        return 1;
+    }
+
+    sqlite3_close(db);
+
+    return 0;
+}
+
+void prepareFilter(char **concatenated, char *source)
+{
+    char percent = '%';
+    size_t len = strlen(source);
+
+    // Two for the extra chars, one for the null terminator
+    *concatenated = malloc(len + 2 + 1);
+    snprintf(*concatenated, "%c%s%c", percent, source, percent);
 }

@@ -8,7 +8,7 @@
 int main()
 {
     int id = getIdFromQueryString();
-
+    
     Medium medium;
     if (!dbFind(id, &medium))
     {
