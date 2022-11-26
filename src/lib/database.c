@@ -5,6 +5,7 @@
 #include "../third-party/sqlite3.h"
 
 char dbFileName[] = "test.db";
+void prepareFilter(char **concatenated, char *source);
 
 int dbInit()
 {
@@ -29,7 +30,7 @@ int dbInit()
     if (rc != SQLITE_OK)
     {
 
-        fprintf(stderr, "SQL error: %s\n", err_msg);
+        fprintf(stderr, "SQL error: %s. Code: %d\n", err_msg, rc);
 
         sqlite3_free(err_msg);
         sqlite3_close(db);
@@ -66,7 +67,7 @@ int dbRead(int (*callback)(void *, int, char **, char **))
     {
 
         fprintf(stderr, "Failed to select data\n");
-        fprintf(stderr, "SQL error: %s\n", err_msg);
+        fprintf(stderr, "SQL error: %s. Code: %d\n", err_msg, rc);
 
         sqlite3_free(err_msg);
         sqlite3_close(db);
@@ -113,13 +114,15 @@ int dbDelete(int id)
     if (rc != SQLITE_DONE)
     {
         fprintf(stderr, "Failed to delete data\n");
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: %s. Code: %d\n", sqlite3_errmsg(db), rc);
 
+        sqlite3_finalize(res);
         sqlite3_close(db);
 
         return 1;
     }
 
+    sqlite3_finalize(res);
     sqlite3_close(db);
 
     return 0;
@@ -163,19 +166,21 @@ int dbCreate(Medium *medium)
     if (rc != SQLITE_DONE)
     {
         fprintf(stderr, "Failed to insert data\n");
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: %s. Code: %d\n", sqlite3_errmsg(db), rc);
 
+        sqlite3_finalize(res);
         sqlite3_close(db);
 
         return 1;
     }
 
+    sqlite3_finalize(res);
     sqlite3_close(db);
 
     return 0;
 }
 
-int dbFind(int id, Medium *medium)
+int dbFind(int id)
 {
     sqlite3 *db;
     sqlite3_stmt *res;
@@ -209,16 +214,46 @@ int dbFind(int id, Medium *medium)
 
     if (rc == SQLITE_ROW)
     {
-        medium->id = (int)sqlite3_column_int(res, 0);
-        medium->name = (char *)sqlite3_column_text(res, 1);
-        medium->type = (int)sqlite3_column_int(res, 2);
-        medium->creator = (char *)sqlite3_column_text(res, 3);
-        medium->borrower = (char *)sqlite3_column_text(res, 4);
+
+        int id = (int)sqlite3_column_int(res, 0);
+        char *name = (char *)sqlite3_column_text(res, 1);
+        int type = (int)sqlite3_column_int(res, 2);
+        char *creator = (char *)sqlite3_column_text(res, 3);
+        char *borrower = (char *)sqlite3_column_text(res, 4);
+
+        printf("\
+            <h4 class='mb-3 m-md-0 p-2'>Edit medium</h4>\
+            <form class='m-0 p-1' action='/update?id=%d' method='post'>\
+            <div class='form-group row mb-3 m-md-0 pb-2'>\
+                <label for='inputName'>Name</label>\
+                <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name'  value='%s'>\
+            </div>\
+            <div class='form-group row mb-3 m-md-0 pb-2'>\
+                <label for='selectType'>Select medium type</label>\
+                <select class='form-control' id='selectType' name='type'>\
+                <option value='0' %s>Book</option>\
+                <option value='1' %s>CD</option>\
+                <option value='2' %s>DVD</option>\
+                </select>\
+            </div>\
+            <div class='form-group row mb-3 m-md-0 pb-2'>\
+                <label for='inputCreator'>Author/Interpreter</label>\
+                <input type='text' class='form-control' id='inputCreator' placeholder='Enter author, interpreter etc.' name='creator' value='%s'>\
+            </div>\
+            <div class='form-group row mb-3 m-md-0 pb-2'>\
+                <label for='inputBorrower'>Borrower</label>\
+                <input type='text' class='form-control' id='inputBorrower' placeholder='Enter borrower' name='borrower' value='%s'>\
+            </div>\
+            <button type='submit' class='btn btn-primary'>Submit</button>\
+            </form>",
+               id, name, type == 0 ? "selected" : "", type == 1 ? "selected" : "",
+               type == 2 ? "selected" : "", creator, borrower);
     }
     else if (rc == SQLITE_DONE)
     {
         fprintf(stderr, "Failed to select data with id %d\n", id);
 
+        sqlite3_finalize(res);
         sqlite3_close(db);
 
         return 1;
@@ -226,13 +261,15 @@ int dbFind(int id, Medium *medium)
     else
     {
         fprintf(stderr, "Failed to select data\n");
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: %s. Code: %d\n", sqlite3_errmsg(db), rc);
 
+        sqlite3_finalize(res);
         sqlite3_close(db);
 
         return 1;
     }
 
+    sqlite3_finalize(res);
     sqlite3_close(db);
 
     return 0;
@@ -276,13 +313,15 @@ int dbUpdate(int id, Medium *medium)
     if (rc != SQLITE_OK)
     {
         fprintf(stderr, "Failed to update data\n");
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "SQL error: %s. Code: %d\n", sqlite3_errmsg(db), rc);
 
+        sqlite3_finalize(res);
         sqlite3_close(db);
 
         return 1;
     }
 
+    sqlite3_finalize(res);
     sqlite3_close(db);
 
     return 0;
@@ -328,8 +367,6 @@ int dbFilter(Filter *filter)
         fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
     }
 
-    int argc = sqlite3_column_count(res);
-
     if (sqlite3_step(res) == SQLITE_ROW)
     {
         do
@@ -363,20 +400,23 @@ int dbFilter(Filter *filter)
     }
     else if (rc == SQLITE_DONE)
     {
+        sqlite3_finalize(res);
         sqlite3_close(db);
 
         return 0;
     }
     else
     {
-        fprintf(stderr, "Failed to select data\n");
-        fprintf(stderr, "SQL error: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "No record returned\n");
+        fprintf(stderr, "SQL error: %s. Code: %d\n", sqlite3_errmsg(db), rc);
 
+        sqlite3_finalize(res);
         sqlite3_close(db);
 
         return 1;
     }
 
+    sqlite3_finalize(res);
     sqlite3_close(db);
 
     return 0;
@@ -384,10 +424,9 @@ int dbFilter(Filter *filter)
 
 void prepareFilter(char **concatenated, char *source)
 {
-    char percent = '%';
     size_t len = strlen(source);
 
     // Two for the extra chars, one for the null terminator
     *concatenated = malloc(len + 2 + 1);
-    snprintf(*concatenated, "%c%s%c", percent, source, percent);
+    snprintf(*concatenated, len + 2 + 1, "%%%s%%", source);
 }

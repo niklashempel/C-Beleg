@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "../lib/database.h"
 #include "../third-party/sqlite3.h"
 #include "../lib/html.h"
@@ -54,13 +55,15 @@ int main()
         <th>Borrower</th>\
         <th>Actions</th>\
     </tr>", filter.name, filter.borrower);
-    if (filter.name != NULL && filter.borrower != NULL)
+
+    // Check if name and borrower filter are both empty. strcmp return 0 if 2 strings are equal.
+    if ((filter.name == NULL && filter.borrower == NULL) || (!strcmp(filter.name, "") && !strcmp(filter.borrower, "")))
     {
-        dbFilter(&filter);
+        dbRead(callback);
     }
     else
     {
-        dbRead(callback);
+        dbFilter(&filter);
     }
 
     puts("</table>");
