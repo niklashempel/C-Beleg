@@ -23,7 +23,7 @@ int main()
     <table class='table'>\
         <tr>\
             <th colspan='4'>\
-                <h3>Media</h3>\
+                <h3><a href='/' class='text-decoration-none text-reset' >Media</a></h3>\
             </th>\
             <td align='right'>\
                 <a type='button' class='btn btn-success' href='/new'>New medium</a>\
