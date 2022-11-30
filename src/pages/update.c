@@ -11,12 +11,15 @@ int main()
     char *body;
     getRequestBody(&body);
 
-    Medium medium;
-    parseRequestBody(body, &medium);
+    if (body)
+    {
+        Medium medium;
+        parseRequestBody(body, &medium);
 
-    dbUpdate(id, &medium);
+        dbUpdate(id, &medium);
 
-    free(body);
+        free(body);
+    }
 
     redirect("/");
 

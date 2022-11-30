@@ -428,5 +428,8 @@ void prepareFilter(char **concatenated, char *source)
 
     // Two for the extra chars, one for the null terminator
     *concatenated = malloc(len + 2 + 1);
-    snprintf(*concatenated, len + 2 + 1, "%%%s%%", source);
+    if (concatenated)
+    {
+        snprintf(*concatenated, len + 2 + 1, "%%%s%%", source);
+    }
 }

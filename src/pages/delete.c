@@ -9,17 +9,20 @@ int main()
     char *body;
     getRequestBody(&body);
 
-    // Get id from body.
-    char *key = strtok(body, "=");
-    char *value = strtok(NULL, "");
-    if (key && (strcmp("id", key) == 0) && value != NULL)
+    if (body)
     {
-        int id = (int)strtol(value, NULL, 10);
+        // Get id from body.
+        char *key = strtok(body, "=");
+        char *value = strtok(NULL, "");
+        if (key && (strcmp("id", key) == 0) && value != NULL)
+        {
+            int id = (int)strtol(value, NULL, 10);
 
-        dbDelete(id);
+            dbDelete(id);
+        }
+
+        free(body);
     }
-
-    free(body);
 
     redirect("/");
 

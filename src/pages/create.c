@@ -9,12 +9,15 @@ int main()
     char *body;
     getRequestBody(&body);
 
-    Medium medium;
-    parseRequestBody(body, &medium);
+    if (body)
+    {
+        Medium medium;
+        parseRequestBody(body, &medium);
 
-    dbCreate(&medium);
+        dbCreate(&medium);
 
-    free(body);
+        free(body);
+    }
 
     redirect("/");
 

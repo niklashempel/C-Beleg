@@ -3,24 +3,30 @@
 #include <stdio.h>
 #include "models.h"
 
-int getIdFromQueryString(){
+int getIdFromQueryString()
+{
     char *query = getenv("QUERY_STRING");
     char *key = strtok(query, "=");
     char *value = strtok(NULL, "");
     int id = atoi(value);
-    
+
     return id;
 }
 
-void getRequestBody(char **body){
+void getRequestBody(char **body)
+{
     char *len_ = getenv("CONTENT_LENGTH");
     long len = strtol(len_, NULL, 10);
     *body = malloc(len + 1);
 
-    fgets(*body, len + 1, stdin);
+    if (body)
+    {
+        fgets(*body, len + 1, stdin);
+    }
 }
 
-void parseRequestBody(char *body, Medium *medium){
+void parseRequestBody(char *body, Medium *medium)
+{
     char *key;
     char *value;
     char *tempKey;
@@ -55,7 +61,8 @@ void parseRequestBody(char *body, Medium *medium){
     }
 }
 
-void parseFilterQuery(Filter *filter){
+void parseFilterQuery(Filter *filter)
+{
     char *body = getenv("QUERY_STRING");
     char *key;
     char *value;

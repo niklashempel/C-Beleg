@@ -54,7 +54,8 @@ int main()
         <th>Author</th>\
         <th>Borrower</th>\
         <th>Actions</th>\
-    </tr>", filter.name, filter.borrower);
+    </tr>",
+           filter.name, filter.borrower);
 
     // Check if name and borrower filter are both empty. strcmp return 0 if 2 strings are equal.
     if ((filter.name == NULL && filter.borrower == NULL) || (!strcmp(filter.name, "") && !strcmp(filter.borrower, "")))
