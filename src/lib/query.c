@@ -87,3 +87,24 @@ void parseFilterQuery(Filter *filter)
         key = tempKey;
     }
 }
+
+RequestMethod getRequestMethod()
+{
+    char *method;
+    RequestMethod request;
+    method = getenv("REQUEST_METHOD");
+    if (strcmp(method, "GET") == 0)
+    {
+        return GET;
+    }
+    else if (strcmp(method, "POST") == 0)
+    {
+        return POST;
+    }
+    else
+    {
+        return Unknown;
+    }
+
+    return request;
+}

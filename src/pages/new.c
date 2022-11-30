@@ -1,12 +1,53 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include "../lib/database.h"
+#include "../lib/models.h"
 #include "../lib/html.h"
+#include "../lib/query.h"
+
+int printForm();
 
 int main()
 {
-    printHeader("New");
+
+    RequestMethod method = getRequestMethod();
+
+    switch (method)
+    {
+    case GET:
+        printHeader("New");
+        printForm();
+        printFooter();
+        break;
+
+    case POST:
+    {
+        char *body;
+        getRequestBody(&body);
+        if (body)
+        {
+            Medium medium;
+            parseRequestBody(body, &medium);
+            dbCreate(&medium);
+            free(body);
+        }
+
+        redirect("/");
+    }
+    break;
+
+    default:
+        return 1;
+    }
+
+    return 0;
+}
+
+int printForm()
+{
     puts("\
     <h4 class='mb-3 m-md-0 p-2'>New medium</h4>\
-    <form class='m-0 p-1' action='/create' method='post'>\
+    <form class='m-0 p-1' action='/new' method='post'>\
       <div class='form-group row mb-3 m-md-0 pb-2'>\
         <label for='inputName'>Name</label>\
         <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name'>\
@@ -29,7 +70,6 @@ int main()
       </div>\
       <button type='submit' class='btn btn-primary'>Submit</button>\
     </form>");
-    printFooter();
 
     return 0;
 }

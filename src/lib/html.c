@@ -19,7 +19,8 @@ void printFooter()
     puts("</html>\n");
 }
 
-void redirect(char* url){
+void redirect(char *url)
+{
     printf("Status: 303 See Other\n");
     printf("Location: %s\n", url);
     printf("\n");

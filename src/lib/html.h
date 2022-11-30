@@ -3,6 +3,6 @@
 
 void printHeader();
 void printFooter();
-void redirect(char* url);
+void redirect(char *url);
 
 #endif // HTML

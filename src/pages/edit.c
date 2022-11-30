@@ -9,13 +9,40 @@ int callback(int id, char *name, int type, char *creator, char *borrower);
 
 int main()
 {
-    int id = getIdFromQueryString();
 
-    printHeader("Edit");
+    RequestMethod method = getRequestMethod();
 
-    dbFind(id, callback);
+    switch (method)
+    {
+    case GET:
+    {
+        int id = getIdFromQueryString();
+        printHeader("Edit");
+        dbFind(id, callback);
+        printFooter();
+    }
+    break;
 
-    printFooter();
+    case POST:
+    {
+        int id = getIdFromQueryString();
+        char *body;
+        getRequestBody(&body);
+        if (body)
+        {
+            Medium medium;
+            parseRequestBody(body, &medium);
+            dbUpdate(id, &medium);
+            free(body);
+        }
+
+        redirect("/");
+    }
+    break;
+
+    default:
+        return 1;
+    }
 
     return 0;
 }

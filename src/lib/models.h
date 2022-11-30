@@ -17,9 +17,17 @@ typedef struct Medium
     char *borrower;
 } Medium;
 
-typedef struct Filter{
+typedef struct Filter
+{
     char *name;
     char *borrower;
 } Filter;
+
+typedef enum RequestMethod
+{
+    Unknown,
+    GET,
+    POST
+} RequestMethod;
 
 #endif // Models

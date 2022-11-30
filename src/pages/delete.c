@@ -17,10 +17,8 @@ int main()
         if (key && (strcmp("id", key) == 0) && value != NULL)
         {
             int id = (int)strtol(value, NULL, 10);
-
             dbDelete(id);
         }
-
         free(body);
     }
 
