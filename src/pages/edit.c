@@ -54,7 +54,7 @@ int callback(int id, char *name, int type, char *creator, char *borrower)
             <form class='m-0 p-1' action='/edit?id=%d' method='post'>\
             <div class='form-group row mb-3 m-md-0 pb-2'>\
                 <label for='inputName'>Name</label>\
-                <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name'  value='%s'>\
+                <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name' value='%s' required>\
             </div>\
             <div class='form-group row mb-3 m-md-0 pb-2'>\
                 <label for='selectType'>Select medium type</label>\

@@ -50,7 +50,7 @@ int printForm()
     <form class='m-0 p-1' action='/new' method='post'>\
       <div class='form-group row mb-3 m-md-0 pb-2'>\
         <label for='inputName'>Name</label>\
-        <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name'>\
+        <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name' required>\
       </div>\
       <div class='form-group row mb-3 m-md-0 pb-2'>\
         <label for='selectType'>Select medium type</label>\
