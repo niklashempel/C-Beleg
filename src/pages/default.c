@@ -8,6 +8,7 @@
 const char *mediaTypes[] = {"Book", "CD", "DVD"};
 
 int callback(void *, int, char **, char **);
+int filterCallback(int id, char *name, int type, char *creator, char *borrower);
 
 int main()
 {
@@ -64,7 +65,7 @@ int main()
     }
     else
     {
-        dbFilter(&filter);
+        dbFilter(&filter, filterCallback);
     }
 
     puts("</table>");
@@ -103,4 +104,32 @@ int callback(void *NotUsed, int argc, char **argv,
     printf("</tr>");
 
     return 0;
+}
+
+int filterCallback(int id, char *name, int type, char *creator, char *borrower)
+{
+    puts("<tr>");
+    printf("<td>%s</td>\n", name);
+    printf("<td>%d</td>\n", type);
+    printf("<td>%s</td>\n", creator);
+    printf("<td>%s</td>\n", borrower);
+    printf("\
+                    <td>\
+                        <div class='btn-toolbar' role='toolbar'>\
+                            <div class='btn-group me-2' role='group'>\
+                                <a type='button' class='btn btn-primary' href='/edit?id=%d'>Edit</a>\
+                            </div>\
+                            <form action='/delete' method='post' style='margin-block-end: 0em'>\
+                                <div class='form-group'>\
+                                <input type='hidden' value='%d' id='id' name='id'>\
+                                <div class='btn-group me-2' role='group'>\
+                                    <button type='submit' class='btn btn-danger'>Delete</button>\
+                                </div>\
+                                </div>\
+                            </form>\
+                        </div>\
+                    </td>",
+           id, id);
+
+    printf("</tr>");
 }

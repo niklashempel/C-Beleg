@@ -4,7 +4,7 @@
 #include "database.h"
 #include "../third-party/sqlite3.h"
 
-char dbFileName[] = "test.db";
+#define dbFileName "data.db"
 void prepareFilter(char **concatenated, char *source);
 
 int dbInit()
@@ -180,7 +180,7 @@ int dbCreate(Medium *medium)
     return 0;
 }
 
-int dbFind(int id)
+int dbFind(int id, int (*callback)(int id, char *name, int type, char *creator, char *borrower))
 {
     sqlite3 *db;
     sqlite3_stmt *res;
@@ -221,33 +221,7 @@ int dbFind(int id)
         char *creator = (char *)sqlite3_column_text(res, 3);
         char *borrower = (char *)sqlite3_column_text(res, 4);
 
-        printf("\
-            <h4 class='mb-3 m-md-0 p-2'>Edit medium</h4>\
-            <form class='m-0 p-1' action='/update?id=%d' method='post'>\
-            <div class='form-group row mb-3 m-md-0 pb-2'>\
-                <label for='inputName'>Name</label>\
-                <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name'  value='%s'>\
-            </div>\
-            <div class='form-group row mb-3 m-md-0 pb-2'>\
-                <label for='selectType'>Select medium type</label>\
-                <select class='form-control' id='selectType' name='type'>\
-                <option value='0' %s>Book</option>\
-                <option value='1' %s>CD</option>\
-                <option value='2' %s>DVD</option>\
-                </select>\
-            </div>\
-            <div class='form-group row mb-3 m-md-0 pb-2'>\
-                <label for='inputCreator'>Author/Interpreter</label>\
-                <input type='text' class='form-control' id='inputCreator' placeholder='Enter author, interpreter etc.' name='creator' value='%s'>\
-            </div>\
-            <div class='form-group row mb-3 m-md-0 pb-2'>\
-                <label for='inputBorrower'>Borrower</label>\
-                <input type='text' class='form-control' id='inputBorrower' placeholder='Enter borrower' name='borrower' value='%s'>\
-            </div>\
-            <button type='submit' class='btn btn-primary'>Submit</button>\
-            </form>",
-               id, name, type == 0 ? "selected" : "", type == 1 ? "selected" : "",
-               type == 2 ? "selected" : "", creator, borrower);
+        callback(id, name, type, creator, borrower);
     }
     else if (rc == SQLITE_DONE)
     {
@@ -284,7 +258,7 @@ int dbUpdate(int id, Medium *medium)
 
     if (rc != SQLITE_OK)
     {
-        fprintf(stdout, "Cannot open database: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
 
         sqlite3_close(db);
 
@@ -305,7 +279,7 @@ int dbUpdate(int id, Medium *medium)
     }
     else
     {
-        fprintf(stdout, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "Failed to execute statement: %s\n", sqlite3_errmsg(db));
     }
 
     rc = sqlite3_step(res);
@@ -327,7 +301,7 @@ int dbUpdate(int id, Medium *medium)
     return 0;
 }
 
-int dbFilter(Filter *filter)
+int dbFilter(Filter *filter, int (*callback)(int id, char *name, int type, char *creator, char *borrower))
 {
     sqlite3 *db;
     sqlite3_stmt *res;
@@ -371,31 +345,14 @@ int dbFilter(Filter *filter)
     {
         do
         {
-            puts("<tr>");
-            int id = sqlite3_column_int(res, 0);
-            printf("<td>%s</td>\n", (char *)sqlite3_column_text(res, 1));
-            printf("<td>%d</td>\n", sqlite3_column_int(res, 2));
-            printf("<td>%s</td>\n", (char *)sqlite3_column_text(res, 3));
-            printf("<td>%s</td>\n", (char *)sqlite3_column_text(res, 4));
-            printf("\
-                    <td>\
-                        <div class='btn-toolbar' role='toolbar'>\
-                            <div class='btn-group me-2' role='group'>\
-                                <a type='button' class='btn btn-primary' href='/edit?id=%d'>Edit</a>\
-                            </div>\
-                            <form action='/delete' method='post' style='margin-block-end: 0em'>\
-                                <div class='form-group'>\
-                                <input type='hidden' value='%d' id='id' name='id'>\
-                                <div class='btn-group me-2' role='group'>\
-                                    <button type='submit' class='btn btn-danger'>Delete</button>\
-                                </div>\
-                                </div>\
-                            </form>\
-                        </div>\
-                    </td>",
-                   id, id);
 
-            printf("</tr>");
+            int id = (int)sqlite3_column_int(res, 0);
+            char *name = (char *)sqlite3_column_text(res, 1);
+            int type = (int)sqlite3_column_int(res, 2);
+            char *creator = (char *)sqlite3_column_text(res, 3);
+            char *borrower = (char *)sqlite3_column_text(res, 4);
+
+            callback(id, name, type, creator, borrower);
         } while (sqlite3_step(res) == SQLITE_ROW);
     }
     else if (rc == SQLITE_DONE)
