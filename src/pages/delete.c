@@ -22,7 +22,7 @@ int main()
         free(body);
     }
 
-    redirect("/");
+    redirect("./default.cgi");
 
     return 0;
 }

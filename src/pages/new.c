@@ -32,7 +32,7 @@ int main()
             free(body);
         }
 
-        redirect("/");
+        redirect("./default.cgi");
     }
     break;
 
@@ -47,7 +47,7 @@ int printForm()
 {
     puts("\
     <h4 class='mb-3 m-md-0 p-2'>New medium</h4>\
-    <form class='m-0 p-1' action='/new' method='post'>\
+    <form class='m-0 p-1' action='./new.cgi' method='post'>\
       <div class='form-group row mb-3 m-md-0 pb-2'>\
         <label for='inputName'>Name</label>\
         <input type='text' class='form-control' id='inputName' placeholder='Enter medium name' name='name' required>\
