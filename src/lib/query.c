@@ -21,6 +21,7 @@ void replace(char *s, char ch, char *repl)
             }
         }
     }
+    
 }
 
 int getIdFromQueryString()
@@ -59,7 +60,7 @@ void parseRequestBody(char *body, Medium *medium)
         {
             value = strtok(NULL, "=");
             replace(value, '+', " ");
-            medium->name = value;
+            medium->name = value ? value : "";
         }
         else if (strcmp(key, "type") == 0)
         {
@@ -70,13 +71,13 @@ void parseRequestBody(char *body, Medium *medium)
         {
             value = strtok(NULL, "=");
             replace(value, '+', " ");
-            medium->creator = value;
+            medium->creator = value ? value : "";
         }
         else if (strcmp(key, "borrower") == 0)
         {
             value = strtok(NULL, "=");
             replace(value, '+', " ");
-            medium->borrower = value;
+            medium->borrower = value ? value : "";
         }
 
         // We store the original key because strtok() destroys the original string.
