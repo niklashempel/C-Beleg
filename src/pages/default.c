@@ -111,8 +111,8 @@ int filterCallback(int id, char *name, int type, char *creator, char *borrower)
     puts("<tr>");
     printf("<td>%s</td>\n", name);
     printf("<td>%d</td>\n", type);
-    printf("<td>%s</td>\n", creator);
-    printf("<td>%s</td>\n", borrower);
+    printf("<td>%s</td>\n", creator ? creator : "");
+    printf("<td>%s</td>\n", borrower ? borrower : "");
     printf("\
                     <td>\
                         <div class='btn-toolbar' role='toolbar'>\
