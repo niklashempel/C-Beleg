@@ -1,39 +1,49 @@
 # Beleg4
 
-## CMake
+## Quickstart
 
-### cmake configure
+You can either build the program with CMake and copy the files to your webserver or use a Docker container. 
 
+### Download project
+
+```sh
+git clone https://github.com/niklashempel/C-Beleg
 ```
-cmake -DCMAKE_C_COMPILER=/usr/bin/gcc CMakeLists.txt --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -S . -B ./build
+
+```sh
+cd C-Beleg
 ```
 
-or if there are sqlite errors:
+### Build with CMake
 
-```
+```sh
 cmake -DCMAKE_C_COMPILER=/usr/bin/gcc CMakeLists.txt --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -DLDL_FLAG='-ldl' -S . -B ./build
 ```
 
-### cmake build
-
-```
+```sh
 cmake --build ./build --config Release
 ```
 
-## Docker
+The compiled files can then be found under build/src/pages.
 
-```
+### Docker
+
+```sh
 docker build . -t beleg
 ```
 
-```
+```sh
 docker run -d -p 9000:80 beleg
 ```
 
+To mount an external database:
+
+```sh
+docker run -d -p 9000:80 --mount type=bind,source=path/to/database/data.db,target=/usr/local/apache2/cgi-bin/data.db beleg
 ```
-docker run --rm -d -p 9000:80 --mount type=bind,source="$(pwd)"/build/src/pages/data.db,target=/usr/local/apache2/cgi-bin/test.db beleg
-```
+
+Open http://localhost:9000/default.cgi
 
 ### SQLite
 
-SQLite is obtained from its [download page](https://www.sqlite.org/download.html) and compiled together with the rest.
+[SQLite](https://www.sqlite.org/download.html) is used as a third-party database library and compiled together with the other modules.

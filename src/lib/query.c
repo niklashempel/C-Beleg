@@ -3,6 +3,27 @@
 #include <stdio.h>
 #include "models.h"
 
+void replace(char *s, char ch, char *repl)
+{
+    if(s)
+    {
+        for(char *t=s; *t; t++)
+        {
+            if(*t == ch)
+            {
+                memcpy(s, repl, 1);
+                s++;
+            }
+            else
+            {
+                *s = *t;
+                s++;
+            }
+        }
+    }
+    
+}
+
 int getIdFromQueryString()
 {
     char *query = getenv("QUERY_STRING");
@@ -38,7 +59,8 @@ void parseRequestBody(char *body, Medium *medium)
         if (strcmp(key, "name") == 0)
         {
             value = strtok(NULL, "=");
-            medium->name = value;
+            replace(value, '+', " ");
+            medium->name = value ? value : "";
         }
         else if (strcmp(key, "type") == 0)
         {
@@ -48,12 +70,14 @@ void parseRequestBody(char *body, Medium *medium)
         else if (strcmp(key, "creator") == 0)
         {
             value = strtok(NULL, "=");
-            medium->creator = value;
+            replace(value, '+', " ");
+            medium->creator = value ? value : "";
         }
         else if (strcmp(key, "borrower") == 0)
         {
             value = strtok(NULL, "=");
-            medium->borrower = value;
+            replace(value, '+', " ");
+            medium->borrower = value ? value : "";
         }
 
         // We store the original key because strtok() destroys the original string.

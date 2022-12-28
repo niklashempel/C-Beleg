@@ -23,15 +23,15 @@ int main()
     <table class='table'>\
         <tr>\
             <th colspan='4'>\
-                <h3><a href='/' class='text-decoration-none text-reset' >Media</a></h3>\
+                <h3><a href='./default.cgi' class='text-decoration-none text-reset' >Media</a></h3>\
             </th>\
             <td align='right'>\
-                <a type='button' class='btn btn-success' href='/new'>New medium</a>\
+                <a type='button' class='btn btn-success' href='./new.cgi'>New medium</a>\
             </td>\
         </tr>\
         <tr>\
             <td colspan='5'>\
-                <form action='/' method='get'>\
+                <form action='./default.cgi' method='get'>\
                     <div class='row align-items-end'>\
                         <div class='form-group col-md-2'>\
                             <label for='inputName'>Name</label>\
@@ -43,7 +43,7 @@ int main()
                         </div>\
                         <div class='form-group col-md-2'>\
                             <button type='submit' class='form-group btn btn-primary'>Filter</button>\
-                            <a type='button' class='form-group btn btn-info' href='/'>Clear</a>\
+                            <a type='button' class='form-group btn btn-info' href='./default.cgi'>Clear</a>\
                         </div>\
                     </div>\
                   </form>\
@@ -87,9 +87,9 @@ int callback(void *NotUsed, int argc, char **argv,
     <td>\
         <div class='btn-toolbar' role='toolbar'>\
             <div class='btn-group me-2' role='group'>\
-                <a type='button' class='btn btn-primary' href='/edit?id=%s'>Edit</a>\
+                <a type='button' class='btn btn-primary' href='./edit.cgi?id=%s'>Edit</a>\
             </div>\
-            <form action='/delete' method='post' style='margin-block-end: 0em'>\
+            <form action='./delete.cgi' method='post' style='margin-block-end: 0em'>\
                 <div class='form-group'>\
                 <input type='hidden' value='%s' id='id' name='id'>\
                 <div class='btn-group me-2' role='group'>\
@@ -111,15 +111,15 @@ int filterCallback(int id, char *name, int type, char *creator, char *borrower)
     puts("<tr>");
     printf("<td>%s</td>\n", name);
     printf("<td>%d</td>\n", type);
-    printf("<td>%s</td>\n", creator);
-    printf("<td>%s</td>\n", borrower);
+    printf("<td>%s</td>\n", creator ? creator : "");
+    printf("<td>%s</td>\n", borrower ? borrower : "");
     printf("\
                     <td>\
                         <div class='btn-toolbar' role='toolbar'>\
                             <div class='btn-group me-2' role='group'>\
-                                <a type='button' class='btn btn-primary' href='/edit?id=%d'>Edit</a>\
+                                <a type='button' class='btn btn-primary' href='./edit.cgi?id=%d'>Edit</a>\
                             </div>\
-                            <form action='/delete' method='post' style='margin-block-end: 0em'>\
+                            <form action='./delete.cgi' method='post' style='margin-block-end: 0em'>\
                                 <div class='form-group'>\
                                 <input type='hidden' value='%d' id='id' name='id'>\
                                 <div class='btn-group me-2' role='group'>\

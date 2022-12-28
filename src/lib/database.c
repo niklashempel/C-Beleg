@@ -59,7 +59,7 @@ int dbRead(int (*callback)(void *, int, char **, char **))
         return 1;
     }
 
-    char *sql = "SELECT * FROM Media";
+    char *sql = "SELECT * FROM Media ORDER BY Name ASC";
 
     rc = sqlite3_exec(db, sql, callback, 0, &err_msg);
 
@@ -317,7 +317,7 @@ int dbFilter(Filter *filter, int (*callback)(int id, char *name, int type, char 
         return 1;
     }
 
-    char *sql = "SELECT * FROM Media WHERE Name like ? AND Borrower like ?";
+    char *sql = "SELECT * FROM Media WHERE Name like ? AND Borrower like ? ORDER BY Name ASC";
 
     rc = sqlite3_prepare_v2(db, sql, -1, &res, 0);
 
