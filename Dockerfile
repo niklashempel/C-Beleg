@@ -14,10 +14,10 @@ RUN cmake -DCMAKE_C_COMPILER=/usr/bin/gcc CMakeLists.txt --no-warn-unused-cli -D
 
 WORKDIR /usr/local/apache2/build/src/pages
 
-RUN cp default /usr/local/apache2/cgi-bin/default
-RUN cp edit /usr/local/apache2/cgi-bin/edit
-RUN cp delete /usr/local/apache2/cgi-bin/delete
-RUN cp new /usr/local/apache2/cgi-bin/new
+RUN cp default.cgi /usr/local/apache2/cgi-bin/default.cgi
+RUN cp edit.cgi /usr/local/apache2/cgi-bin/edit.cgi
+RUN cp delete.cgi /usr/local/apache2/cgi-bin/delete.cgi
+RUN cp new.cgi /usr/local/apache2/cgi-bin/new.cgi
 
 RUN chmod 1777 /usr/local/apache2/cgi-bin
 
