@@ -5,17 +5,20 @@
 
 void replace(char *s, char ch, char *repl)
 {
-    for(char *t=s; *t; t++)
+    if(s)
     {
-        if(*t == ch)
+        for(char *t=s; *t; t++)
         {
-            memcpy(s, repl, 1);
-            s++;
-        }
-        else
-        {
-            *s = *t;
-            s++;
+            if(*t == ch)
+            {
+                memcpy(s, repl, 1);
+                s++;
+            }
+            else
+            {
+                *s = *t;
+                s++;
+            }
         }
     }
 }
