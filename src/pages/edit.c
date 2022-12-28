@@ -75,7 +75,7 @@ int callback(int id, char *name, int type, char *creator, char *borrower)
             <button type='submit' class='btn btn-primary'>Submit</button>\
             </form>",
            id, name, type == 0 ? "selected" : "", type == 1 ? "selected" : "",
-           type == 2 ? "selected" : "", creator, borrower);
+           type == 2 ? "selected" : "", creator ? creator : "", borrower ? borrower : "");
 
     return 0;
 }
