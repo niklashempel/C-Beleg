@@ -3,6 +3,23 @@
 #include <stdio.h>
 #include "models.h"
 
+void replace(char *s, char ch, char *repl)
+{
+    for(char *t=s; *t; t++)
+    {
+        if(*t == ch)
+        {
+            memcpy(s, repl, 1);
+            s++;
+        }
+        else
+        {
+            *s = *t;
+            s++;
+        }
+    }
+}
+
 int getIdFromQueryString()
 {
     char *query = getenv("QUERY_STRING");
@@ -38,6 +55,7 @@ void parseRequestBody(char *body, Medium *medium)
         if (strcmp(key, "name") == 0)
         {
             value = strtok(NULL, "=");
+            replace(value, '+', " ");
             medium->name = value;
         }
         else if (strcmp(key, "type") == 0)
@@ -48,11 +66,13 @@ void parseRequestBody(char *body, Medium *medium)
         else if (strcmp(key, "creator") == 0)
         {
             value = strtok(NULL, "=");
+            replace(value, '+', " ");
             medium->creator = value;
         }
         else if (strcmp(key, "borrower") == 0)
         {
             value = strtok(NULL, "=");
+            replace(value, '+', " ");
             medium->borrower = value;
         }
 
