@@ -2,7 +2,7 @@
 
 ## Quickstart
 
-You can either build the program with CMake and copy the files to your webserver or use a Docker container. 
+The project can either be built with CMake and then copied to the webserver or by using a Docker container. 
 
 ### Download project
 
