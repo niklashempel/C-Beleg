@@ -21,7 +21,6 @@ void replace(char *s, char ch, char *repl)
             }
         }
     }
-    
 }
 
 int getIdFromQueryString()
@@ -99,11 +98,13 @@ void parseFilterQuery(Filter *filter)
         if (strcmp(key, "name") == 0)
         {
             value = strtok(NULL, "=");
+            replace(value, '+', " ");
             filter->name = value == NULL ? "" : value;
         }
         else if (strcmp(key, "borrower") == 0)
         {
             value = strtok(NULL, "=");
+            replace(value, '+', " ");
             filter->borrower = value == NULL ? "" : value;
         }
 
