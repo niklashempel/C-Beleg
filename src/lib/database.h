@@ -1,3 +1,8 @@
+/*
+ * database.h
+ * 2023-1-15
+ * Author: Niklas Hempel
+ */
 #ifndef DATABASE_H
 #define DATABASE_H
 #include "models.h"
