@@ -5,6 +5,7 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../lib/database.h"
 #include "../third-party/sqlite3.h"
 #include "../lib/html.h"
