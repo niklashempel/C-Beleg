@@ -1,3 +1,8 @@
+/*
+ * default.c
+ * 2023-1-15
+ * Author: Niklas Hempel
+ */
 #include <stdio.h>
 #include <string.h>
 #include "../lib/database.h"

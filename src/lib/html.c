@@ -1,3 +1,8 @@
+/*
+ * html.c
+ * 2023-1-15
+ * Author: Niklas Hempel
+ */
 #include <stdio.h>
 
 void printHeader(char *title)

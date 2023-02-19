@@ -1,3 +1,8 @@
+/*
+ * query.h
+ * 2023-1-15
+ * Author: Niklas Hempel
+ */
 #include "models.h"
 
 int getIdFromQueryString();

@@ -1,3 +1,8 @@
+/*
+ * models.h
+ * 2023-1-15
+ * Author: Niklas Hempel
+ */
 #ifndef MODELS_H
 #define MODELS_H
 
