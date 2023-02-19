@@ -63,7 +63,7 @@ int main()
     </tr>",
            filter.name, filter.borrower);
 
-    // Check if name and borrower filter are both empty. strcmp return 0 if 2 strings are equal.
+    // Check if name and borrower filter are both empty. strcmp returns 0 if 2 strings are equal.
     if ((filter.name == NULL && filter.borrower == NULL) || (!strcmp(filter.name, "") && !strcmp(filter.borrower, "")))
     {
         dbRead(callback);
