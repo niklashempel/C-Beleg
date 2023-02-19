@@ -25,7 +25,7 @@ int main()
     printHeader("Media control");
 
     printf("\
-    <table class='table'>\
+    <table class='table' style='table-layout: fixed'>\
         <tr>\
             <th colspan='4'>\
                 <h3><a href='./default.cgi' class='text-decoration-none text-reset' >Media</a></h3>\
@@ -86,7 +86,15 @@ int callback(void *NotUsed, int argc, char **argv,
     puts("<tr>");
     for (int i = 1; i < argc; i++)
     {
-        printf("<td>%s</td>\n", argv[i] ? argv[i] : "");
+        // Check if column is type. If so, print the media type instead of the number.
+        if (i == 2)
+        {
+            printf("<td>%s</td>\n", mediaTypes[atoi(argv[i])]);
+        }
+        else
+        {
+            printf("<td>%s</td>\n", argv[i] ? argv[i] : "");
+        }
     }
     printf("\
     <td>\
