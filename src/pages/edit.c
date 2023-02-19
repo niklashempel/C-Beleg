@@ -25,8 +25,8 @@ int main()
         printHeader("Edit");
         dbFind(id, callback);
         printFooter();
+        break;
     }
-    break;
 
     case POST:
     {
@@ -42,12 +42,14 @@ int main()
         }
 
         redirect("./default.cgi");
+        break;
     }
-    break;
-    
+
     default:
+    {
         fprintf(stderr, "Error: Method not allowed.");
         return 1;
+    }
     }
 
     return 0;

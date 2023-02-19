@@ -20,12 +20,15 @@ int main()
     switch (method)
     {
     case GET:
+    {
         printHeader("New");
         printForm();
         printFooter();
         break;
+    }
 
     case POST:
+    {
         char *body;
         getRequestBody(&body);
         if (body)
@@ -38,10 +41,13 @@ int main()
 
         redirect("./default.cgi");
         break;
+    }
 
     default:
+    {
         fprintf(stderr, "Error: Method not allowed.");
         return 1;
+    }
     }
 
     return 0;
