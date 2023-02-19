@@ -1,6 +1,6 @@
 /*
  * edit.c
- * 2023-1-15
+ * 2023-2-19
  * Author: Niklas Hempel
  */
 #include <stdio.h>
@@ -44,8 +44,9 @@ int main()
         redirect("./default.cgi");
     }
     break;
-
+    
     default:
+        fprintf(stderr, "Error: Method not allowed.");
         return 1;
     }
 

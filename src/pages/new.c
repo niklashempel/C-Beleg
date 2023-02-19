@@ -1,6 +1,6 @@
 /*
  * new.c
- * 2023-1-15
+ * 2023-2-19
  * Author: Niklas Hempel
  */
 #include <stdio.h>
@@ -26,7 +26,6 @@ int main()
         break;
 
     case POST:
-    {
         char *body;
         getRequestBody(&body);
         if (body)
@@ -38,10 +37,10 @@ int main()
         }
 
         redirect("./default.cgi");
-    }
-    break;
+        break;
 
     default:
+        fprintf(stderr, "Error: Method not allowed.");
         return 1;
     }
 
