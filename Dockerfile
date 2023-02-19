@@ -9,7 +9,7 @@ COPY ./httpd.conf /usr/local/apache2/conf/httpd.conf
 COPY src/ src/
 COPY CMakeLists.txt CMakeLists.txt
 
-RUN cmake -DCMAKE_C_COMPILER=/usr/bin/gcc CMakeLists.txt --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -DLDL_FLAG= -S . -B ./build &&\
+RUN cmake -DCMAKE_C_COMPILER=/usr/bin/gcc CMakeLists.txt -DCMAKE_BUILD_TYPE:STRING=Release -S . -B ./build &&\
     cmake --build ./build --config Release 
 
 WORKDIR /usr/local/apache2/build/src/pages
